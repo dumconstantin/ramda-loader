@@ -6,7 +6,9 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ramda": "^0.21.0"
+  },
   "devDependencies": {
     "acorn": "^3.1.0",
     "ast-query": "^1.2.0",
@@ -21,7 +23,6 @@
     "gulp-babel": "^6.1.2",
     "gulp-sourcemaps": "^1.6.0",
     "mocha": "^2.4.5",
-    "ramda": "^0.21.0",
     "ramda-global-loader": "^0.1.0",
     "webpack": "^1.13.0"
   },
