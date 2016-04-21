@@ -2,7 +2,8 @@
 module.exports = {
   entry: __dirname + '/src/index.js',
   output: {
-    filename: __dirname + '/dist/bundle.js'
+    filename: __dirname + '/dist/bundle.js',
+    libraryTarget: 'commonjs2'
   },
   target: 'node',
   resolveLoader: {

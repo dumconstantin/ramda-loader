@@ -1,5 +1,9 @@
-add(10)
 
-var foo = add(10)
+function add(a) {
+  return function (b) {
+    throw new Error('a')
+    return a + b
+  }
+}
 
-
+module.exports = add(11)

@@ -7,24 +7,21 @@ var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
 
-function wrapper(File, LineNumber, CharCount, fn) {
-  return () => {
+function wrapper(FileName, Row, Char, fn) {
+  return function () {
     var args = arguments
     try {
       var result = fn.apply(null, args)
 
       if (true === result instanceof Function) {
-        return wrapper(File, LineNumber, CharCount, result)
+        return wrapper(FileName, Row, Char, result)
       } else {
         return result
       }
 
     } catch(e) {
-      e.file = File
-      e.lineNumber = LineNumber
-      e.name = Name
-      e.args = args
-      throw e
+      let err = new Error(FileName + ':' + Row + ':' + Char + e.message)
+      throw err
     }
   }
 }
@@ -51,8 +48,7 @@ module.exports = function(source, map) {
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
-        if (undefined === parent.object) {
-          console.log(charAt(source, node.start))
+        if (undefined === parent.object && 'FunctionDeclaration' !== parent.type) {
           return b.callExpression(b.identifier('wrapper'), [
             b.literal(file),
             b.literal(rowAt(source, node.start)),
