@@ -4,6 +4,7 @@ module.exports = {
   output: {
     filename: __dirname + '/dist/bundle.js'
   },
+  target: 'node',
   resolveLoader: {
     modulesDirectories: [__dirname + '/../../', 'node_modules']
   },
