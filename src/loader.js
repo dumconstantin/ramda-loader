@@ -20,7 +20,7 @@ function wrapper(FileName, Row, Char, fn) {
       }
 
     } catch(e) {
-      let err = new Error(FileName + ':' + Row + ':' + Char + e.message)
+      let err = new Error(FileName + ':' + Row + ':' + Char + ' ' + e.message)
       throw err
     }
   }

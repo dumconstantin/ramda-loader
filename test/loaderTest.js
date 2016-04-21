@@ -7,7 +7,9 @@ describe('loader tests', () => {
 
   it('should properly replace ramda functions', () => {
 
-    console.log(sample, sample(10))
+    expect(() => {
+      sample(10, [1])
+    }).to.throw('/home/markets/repos/ramda-debug-loader/sample/src/index.js:3:10 fn.apply is not a function')
 
   })
 

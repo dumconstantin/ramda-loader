@@ -1,3 +1,7 @@
 
+var foo = function () {
+  return apply
+}
 
-module.exports = add(11)
+
+module.exports = foo()
