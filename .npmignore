@@ -1,0 +1,6 @@
+test/
+node_modules/
+sample/
+gulpfile.js
+README.md
+src/
