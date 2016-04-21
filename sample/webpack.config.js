@@ -11,6 +11,7 @@ module.exports = {
   },
   module: {
     loaders: [
+      { test: /.*/, exclude: /node_modules/, loader: 'ramda-global-loader' },
       { test: /.*/, exclude: /node_modules/, loader: 'ramda-debug-loader' }
     ]
   }
