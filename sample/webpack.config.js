@@ -5,7 +5,7 @@ module.exports = {
     filename: __dirname + '/dist/bundle.js'
   },
   resolveLoader: {
-    modulesDirectories: [__dirname + '/../../']
+    modulesDirectories: [__dirname + '/../../', 'node_modules']
   },
   module: {
     loaders: [
