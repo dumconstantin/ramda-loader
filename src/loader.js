@@ -1,8 +1,6 @@
 var acorn = require('acorn'); // parser
-var esrecurse = require('esrecurse'); // walker
 var b = require('ast-types').builders; // ast types
 var escodegen = require('escodegen'); // generator
-var program = require("ast-query");
 var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
@@ -21,6 +19,10 @@ function wrapper(FileName, Row, Char, fn) {
 
     } catch(e) {
       let err = new Error(FileName + ':' + Row + ':' + Char + ' ' + e.message)
+      err.FileName = FileName
+      err.Row = Row
+      err.Char = Char
+      err.args = args
       throw err
     }
   }
@@ -43,7 +45,9 @@ module.exports = function(source, map) {
 
   let file = this.resourcePath
 
-  var ast = acorn.parse(source)
+  var ast = acorn.parse(source, {
+    sourceType: 'module'
+  })
 
   var tree = traverse.replace(ast, {
     leave(node, parent) {

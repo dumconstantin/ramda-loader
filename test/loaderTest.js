@@ -1,15 +1,23 @@
 'use strict'
 
 var expect = require('chai').expect;
-var sample = require('./../sample/dist/bundle.js')
+var foo = require('./../sample/dist/bundle.js').foo
 
 describe('loader tests', () => {
 
   it('should properly replace ramda functions', () => {
+    let err
 
-    expect(() => {
-      sample(10, [1])
-    }).to.throw('/home/markets/repos/ramda-debug-loader/sample/src/index.js:3:10 fn.apply is not a function')
+    try {
+      foo(10, [1])
+    } catch (e) {
+      err = e
+    }
+
+    expect(err.FileName).to.exist
+    expect(err.Row).to.exist
+    expect(err.Char).to.exist
+    expect(err.args).to.exist
 
   })
 

@@ -1,7 +1,5 @@
 
-var foo = function () {
-  return apply
-}
+var foo = apply
 
+export { foo }
 
-module.exports = foo()
