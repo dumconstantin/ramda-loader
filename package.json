@@ -1,6 +1,6 @@
 {
   "name": "ramda-debug-loader",
-  "version": "0.1.9",
+  "version": "0.1.15",
   "description": "Indispensable RamdaJs debugging tool for avoiding reading through huge call stacks",
   "main": "dist/loader.js",
   "directories": {
@@ -24,7 +24,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-sourcemaps": "^1.6.0",
     "mocha": "^2.4.5",
-    "ramda-global-loader": "^0.2.2",
+    "ramda-global-loader": "^0.2.8",
     "webpack": "^1.13.0"
   },
   "scripts": {

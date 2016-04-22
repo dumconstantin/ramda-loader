@@ -43,19 +43,27 @@ module.exports = function(source, map) {
 
   this.cacheable();
 
+  var ast
+
+  try {
+    ast = acorn.parse(source, {
+      sourceType: 'module'
+    })
+  } catch (e) {
+    console.error('[ramda-debug-loader]', e)
+    return source
+  }
+
   let file = this.resourcePath
-
-  var ast = acorn.parse(source, {
-    sourceType: 'module'
-  })
-
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
         if (undefined === parent.object
           && 'FunctionDeclaration' !== parent.type
           && 'Identifier' === node.type
-          && (undefined !== parent.init && 'Identifier' === parent.init.type)
+          && 'ArrowFunctionExpression' !== parent.type
+          && 'Property' !== parent.type
+//          && (undefined !== parent.init && 'Identifier' === parent.init.type)
         ) {
           return b.callExpression(b.identifier('wrapper'), [
             b.literal(file),
