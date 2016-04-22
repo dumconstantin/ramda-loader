@@ -12,7 +12,7 @@ function wrapper(FileName, Row, Char, fnName, fn) {
       var result = fn.apply(null, args)
 
       if (true === result instanceof Function) {
-        return wrapper(FileName, Row, Char, result)
+        return wrapper(FileName, Row, Char, fnName, result)
       } else {
         return result
       }
