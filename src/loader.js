@@ -5,7 +5,7 @@ var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
 
-function wrapper(FileName, Row, Char, fn) {
+function wrapper(FileName, Row, Char, fnName, fn) {
   return function () {
     var args = arguments
     try {
@@ -18,7 +18,7 @@ function wrapper(FileName, Row, Char, fn) {
       }
 
     } catch(e) {
-      let err = new Error(FileName + ':' + Row + ':' + Char + ' ' + e.message)
+      let err = new Error(FileName + ':' + Row + ':' + Char + ':' + fnName + ' ' + e.message)
       err.FileName = FileName
       err.Row = Row
       err.Char = Char
@@ -69,6 +69,7 @@ module.exports = function(source, map) {
             b.literal(file),
             b.literal(rowAt(source, node.start)),
             b.literal(charAt(source, node.start)),
+            b.literal(node.name),
             b.identifier(node.name)
           ])
         }
