@@ -52,7 +52,11 @@ module.exports = function(source, map) {
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
-        if (undefined === parent.object && 'FunctionDeclaration' !== parent.type) {
+        if (undefined === parent.object
+          && 'FunctionDeclaration' !== parent.type
+          && 'Identifier' === node.type
+          && (undefined !== parent.init && 'Identifier' === parent.init.type)
+        ) {
           return b.callExpression(b.identifier('wrapper'), [
             b.literal(file),
             b.literal(rowAt(source, node.start)),
