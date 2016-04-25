@@ -1,6 +1,6 @@
 {
   "name": "ramda-loader",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Indispensable RamdaJs debugging tool for avoiding reading through huge call stacks",
   "main": "dist/loader.js",
   "directories": {
