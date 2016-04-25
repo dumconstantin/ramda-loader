@@ -17,7 +17,7 @@ const getVisitor = ctx => (node, parent) => {
         ctx.ramdaImportFns.push(node.name)
       }
 
-      if (ctx.debug === true) {
+      if (ctx.debug === true && '__' !== node.name) {
         return b.callExpression(b.identifier(ctx.wrapperId), [
           b.literal(ctx.file),
           b.literal(rowLoc),
