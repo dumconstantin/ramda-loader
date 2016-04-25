@@ -1,6 +1,12 @@
+var webpack = require('webpack')
 
 module.exports = {
-  entry: __dirname + '/src/index.js',
+  entry: {
+    sample: __dirname + '/src/index.js',
+    vendor: [
+      'ramda'
+    ]
+  },
   output: {
     filename: __dirname + '/dist/bundle.js',
     libraryTarget: 'commonjs2'
@@ -9,7 +15,13 @@ module.exports = {
   resolveLoader: {
     modulesDirectories: [__dirname + '/../../', 'node_modules']
   },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+  ],
   module: {
+    noParse: [
+      /^ramda$/
+    ],
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' ,
         query: { presets: ['es2015'] }

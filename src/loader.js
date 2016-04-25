@@ -5,6 +5,8 @@ var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
 
+import shouldReplace from './shouldReplace'
+
 function wrapper(FileName, Row, Char, fnName, fn) {
   return function () {
     var args = arguments
@@ -55,9 +57,20 @@ module.exports = function(source, map) {
   }
 
   let file = this.resourcePath
+
+  // Shorten the file name
+  if (file.length > 30) {
+    file = file.substr(file.length - 30)
+    file = file.substr(file.indexOf('/'))
+    file = '..' + file
+  }
+
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
+        console.log(node)
+        console.log('---- Parent ---- ')
+        console.log(parent)
         if (undefined === parent.object
           && 'FunctionDeclaration' !== parent.type
           && 'Identifier' === node.type

@@ -1,24 +1,50 @@
 'use strict'
 
+var fs = require('fs')
 var expect = require('chai').expect;
-var foo = require('./../sample/dist/bundle.js').foo
+var webpack = require('webpack')
+var config = require(`${__dirname}/../sample/webpack.config.js`)
+var files = fs.readdirSync(`${__dirname}/../sample/src/`)
+var validFiles = files.filter(x => /^valid/.test(x))
+var invalidFiles = files.filter(x => /^invalid/.test(x))
+
+var wrapperExp = /wrapper\('([\.\/\w\-]+)',\s(\d+),\s(\d+),\s'(\w+)',\s(\w+)\)/g
 
 describe('loader tests', () => {
+  var compiler
 
-  it('should properly replace ramda functions', () => {
-    let err
+  validFiles.forEach(file => {
 
-    try {
-      foo(10, [1])
-    } catch (e) {
-      err = e
-    }
+    it(`should compile and replace properly "${file}"`, (done) => {
 
-    expect(err.FileName).to.exist
-    expect(err.Row).to.exist
-    expect(err.Char).to.exist
-    expect(err.args).to.exist
+      config.entry.sample = `${__dirname}/../sample/src/${file}`
+      compiler = webpack(config)
+
+      compiler.run(function (err, stat) {
+        let source = fs.readFileSync(`${__dirname}/../sample/dist/bundle.js`, 'utf-8')
+        let result = wrapperExp.exec(source)
+
+        expect(err).to.be.null
+        expect(result).to.not.be.null
+
+        done()
+      })
+
+    })
 
   })
 
+/*
+  it('should run invalid sample tests', (done) => {
+
+    config.entry.sample = __dirname + '/../sample/src/valid-1.js'
+    compiler = webpack(config)
+
+    compiler.run(function (err, stat) {
+      console.log(stat)
+      done()
+    })
+
+  })
+  */
 })
