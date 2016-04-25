@@ -26,8 +26,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' ,
         query: { presets: ['es2015'] }
       },
-      { test: /.*/, exclude: /node_modules/, loader: 'ramda-global-loader' },
-      { test: /.*/, exclude: /node_modules/, loader: 'ramda-debug-loader' }
+      { test: /.*/, exclude: /node_modules/, loader: 'ramda-loader?debug=true' }
     ]
   }
 }
