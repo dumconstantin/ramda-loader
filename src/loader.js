@@ -1,34 +1,61 @@
 var acorn = require('acorn'); // parser
 var b = require('ast-types').builders; // ast types
 var escodegen = require('escodegen'); // generator
-var ramda = require('ramda')
-var ramdaFn = Object.keys(ramda)
-var traverse = require('estraverse')
 
 var wrapperId = require('./wrapper.js').id
+
+import ramda from 'ramda'
+
+import { traverse, replace } from 'estraverse'
+
+import loaderUtils from 'loader-utils'
 
 import isIdentifier from './isIdentifier'
 import isDeclaration from './isDeclaration'
 import rowAt from './rowAt'
 import charAt from './charAt'
 
-module.exports = function(source, map) {
-  var self = this
 
-  this.cacheable();
+const redeclareError = (ctx, rowLoc, charLoc, name) => {
+  return new Error(`
 
-  var ast
+  [ramda-global-loader]
+  Error: "${name}" is redeclared in ${ctx.file}:${row}:${charLoc}
+  RamdaJs functions shouldn't be redeclared if you want to use RamdaJs without the R. namespace.
 
-  try {
-    ast = acorn.parse(source, {
-      sourceType: 'module'
-    })
-  } catch (e) {
-    console.error('[ramda-debug-loader]', e)
-    return source
+            `)
+}
+
+const getVisitor = ctx => (node, parent) => {
+
+  if (-1 !== ctx.ramdaFns.indexOf(node.name)) {
+    let rowLoc = rowAt(ctx.source, node.start)
+    let charLoc = charAt(ctx.source, node.start)
+
+    if (isIdentifier(node, parent)) {
+
+      if (-1 !== ctx.ramdaImportFns.indexOf(node.name)) {
+        ctx.ramdaImportFns.push(node.name)
+      }
+
+      if (ctx.debug === true) {
+        return b.callExpression(b.identifier(ctx.wrapperId), [
+          b.literal(ctx.file),
+          b.literal(rowLoc),
+          b.literal(charLoc),
+          b.literal(node.name),
+          b.identifier(node.name)
+        ])
+      }
+    } else if (isDeclaration(node, parent)) {
+      ctx.emitError(redeclareError(ctx, rowLoc, charLoc, node.name))
+    }
   }
 
-  let file = this.resourcePath
+  return node
+}
+
+const shortenFileName = file => {
 
   // Shorten the file name
   if (file.length > 30) {
@@ -37,37 +64,48 @@ module.exports = function(source, map) {
     file = '..' + file
   }
 
-  var tree = traverse.replace(ast, {
-    leave(node, parent) {
-      if (-1 !== ramdaFn.indexOf(node.name)) {
-//        console.log(file)
-//        console.log(node)
-//        console.log('---- Parent ---- ')
-//        console.log(parent)
+  return file
+}
 
-        if (isIdentifier(node, parent)) {
-          return b.callExpression(b.identifier(wrapperId), [
-            b.literal(file),
-            b.literal(rowAt(source, node.start)),
-            b.literal(charAt(source, node.start)),
-            b.literal(node.name),
-            b.identifier(node.name)
-          ])
-        } else if (isDeclaration(node, parent)) {
-          self.emitError(new Error(`
+module.exports = function(source, map) {
+  let self = this
+  let ast
+  let tree
 
-    [ramda-global-loader]
-    Error: "${node.name}" is redeclared in ${file}:${rowAt(source, node.start)}:${charAt(source, node.start)}
-    RamdaJs functions shouldn't be redeclared if you want to use RamdaJs without the R. namespace.
+  // Setup context
+  self.debug = loaderUtils.parseQuery(self.query).debug
+  self.ramdaImportFns = []
+  self.wrapperId = wrapperId
+  self.ramdaFns = Object.keys(ramda).filter(x => x !== 'default')
+  self.file = shortenFileName(self.resourcePath)
+  self.source = source
+  self.cacheable()
 
-              `))
-        }
-      }
-      return node
-    }
-  })
+  try {
+    ast = acorn.parse(source, {
+      sourceType: 'module'
+    })
+  } catch (e) {
+    self.emitError(new Error('[ramda-debug-loader]', e))
+    return source
+  }
 
-  source = escodegen.generate(tree)
+  let visitor = {
+    leave: getVisitor(self)
+  }
+
+  if (self.debug === true) {
+    tree = replace(ast, visitor)
+    source = escodegen.generate(tree)
+  } else {
+    traverse(ast, visitor)
+  }
+
+  /*
+  let header = 'var R = require("ramda")\n'
+  header += R.join('\n', R.map(x => `var ${x} = R.${x}`, fns))
+  source = header + '\n\n' + source
+  */
 
   source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js') \n ${source}`
 
