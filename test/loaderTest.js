@@ -7,7 +7,7 @@ var config = require(`${__dirname}/../sample/webpack.config.js`)
 var files = fs.readdirSync(`${__dirname}/../sample/src/`)
 var validFiles = files.filter(x => /^valid/.test(x))
 var invalidFiles = files.filter(x => /^invalid/.test(x))
-var wrapperExp = /wrapper\('([\.\/\w\-]+)',\s(\d+),\s(\d+),\s'(\w+)',\s(\w+)\)/g
+var wrapperExp = require('./../dist/wrapper.js').regex
 
 const compile = (file, config, cb) => {
   config.entry.sample = `${__dirname}/../sample/src/${file}`

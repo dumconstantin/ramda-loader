@@ -5,31 +5,10 @@ var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
 
+var wrapperId = require('./wrapper.js').id
+
 import isIdentifier from './isIdentifier'
 import isDeclaration from './isDeclaration'
-
-function wrapper(FileName, Row, Char, fnName, fn) {
-  return function () {
-    var args = arguments
-    try {
-      var result = fn.apply(null, args)
-
-      if (true === result instanceof Function) {
-        return wrapper(FileName, Row, Char, fnName, result)
-      } else {
-        return result
-      }
-
-    } catch(e) {
-      let err = new Error(FileName + ':' + Row + ':' + Char + ':' + fnName + ' ' + e.message)
-      err.FileName = FileName
-      err.Row = Row
-      err.Char = Char
-      err.args = args
-      throw err
-    }
-  }
-}
 
 function rowAt(text, charNo) {
   let sub = text.substr(0, charNo)
@@ -77,7 +56,7 @@ module.exports = function(source, map) {
 //        console.log(parent)
 
         if (isIdentifier(node, parent)) {
-          return b.callExpression(b.identifier('wrapper'), [
+          return b.callExpression(b.identifier(wrapperId), [
             b.literal(file),
             b.literal(rowAt(source, node.start)),
             b.literal(charAt(source, node.start)),
@@ -100,7 +79,7 @@ module.exports = function(source, map) {
 
   source = escodegen.generate(tree)
 
-  source = wrapper.toString() + '\n' + source
+  source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js') \n ${source}`
 
   this.callback(null, source, map)
 };
