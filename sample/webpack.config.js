@@ -2,10 +2,16 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    sample: __dirname + '/src/index.js',
+    sample: __dirname + '/src/invalid-1.js',
     vendor: [
       'ramda'
     ]
+  },
+  stats: {
+    colors: true,
+    modules: true,
+    reasons: true,
+    errorDetails: true
   },
   output: {
     filename: __dirname + '/dist/bundle.js',
@@ -26,7 +32,6 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' ,
         query: { presets: ['es2015'] }
       },
-      { test: /.*/, exclude: /node_modules/, loader: 'ramda-global-loader' },
       { test: /.*/, exclude: /node_modules/, loader: 'ramda-debug-loader' }
     ]
   }

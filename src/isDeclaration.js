@@ -12,11 +12,10 @@ const isDeclaration = (node, parent) => {
       (parent.type === 'MemberExpression' &&
         parent.object.name === node.name &&
         parent.object.start === node.start &&
-        -1 === ['apply', 'call'].indexOf(parent.object.property.name)) ||
+        -1 === ['apply', 'call'].indexOf(parent.property.name)) ||
       (parent.type === 'ImportSpecifier' && parent.local.name === node.name) ||
       (parent.type === 'ImportDefaultSpecifier' && parent.local.name === node.name) ||
-      (parent.type === 'ImportNamespaceSpecifier' && parent.local.name === node.name) ||
-      (parent.type === 'ExpressionStatement' && parent.expression.name === node.name)
+      (parent.type === 'ImportNamespaceSpecifier' && parent.local.name === node.name)
     )
   ) {
     return true

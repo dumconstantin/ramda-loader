@@ -15,7 +15,7 @@ const shouldReplace = (node, parent) => {
       (parent.type === 'MemberExpression' &&
        parent.object.name === node.name &&
        parent.object.start === node.start &&
-       -1 !== ['apply', 'call'].indexOf(parent.object.property.name)
+       -1 !== ['apply', 'call'].indexOf(parent.property.name)
      ) ||
       (parent.type === 'CallExpression' && parent.callee.name === node.name)
     )

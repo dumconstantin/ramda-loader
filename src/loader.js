@@ -43,10 +43,12 @@ function charAt(text, charNo) {
 }
 
 module.exports = function(source, map) {
+  var self = this
 
   this.cacheable();
 
   var ast
+  var err = false
 
   try {
     ast = acorn.parse(source, {
@@ -69,6 +71,7 @@ module.exports = function(source, map) {
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
+//        console.log(file)
 //        console.log(node)
 //        console.log('---- Parent ---- ')
 //        console.log(parent)
@@ -82,7 +85,13 @@ module.exports = function(source, map) {
             b.identifier(node.name)
           ])
         } else if (isDeclaration(node, parent)) {
-          throw `${node.name} is redeclared in ${file}`
+          self.emitError(new Error(`
+
+    [ramda-global-loader]
+    Error: "${node.name}" is redeclared in ${file}:${rowAt(source, node.start)}:${charAt(source, node.start)}
+    RamdaJs functions shouldn't be redeclared if you want to use RamdaJs without the R. namespace.
+
+              `))
         }
       }
       return node
