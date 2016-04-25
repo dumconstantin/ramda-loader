@@ -12,6 +12,7 @@
     "ast-types": "^0.8.16",
     "escodegen": "^1.8.0",
     "estraverse": "^4.2.0",
+    "loader-utils": "^0.2.14",
     "ramda": "^0.21.0"
   },
   "devDependencies": {
