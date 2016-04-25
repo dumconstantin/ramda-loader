@@ -1,2 +1,2 @@
-// parent.type = Property parent.key.name = node.name
-var foo = { apply: 'bar' }
+// parent.type = ExpressionStatement parent.expression.name = node.name
+{ apply }

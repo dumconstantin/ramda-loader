@@ -5,7 +5,8 @@ var ramda = require('ramda')
 var ramdaFn = Object.keys(ramda)
 var traverse = require('estraverse')
 
-import shouldReplace from './shouldReplace'
+import isIdentifier from './isIdentifier'
+import isDeclaration from './isDeclaration'
 
 function wrapper(FileName, Row, Char, fnName, fn) {
   return function () {
@@ -68,16 +69,11 @@ module.exports = function(source, map) {
   var tree = traverse.replace(ast, {
     leave(node, parent) {
       if (-1 !== ramdaFn.indexOf(node.name)) {
-        console.log(node)
-        console.log('---- Parent ---- ')
-        console.log(parent)
-        if (undefined === parent.object
-          && 'FunctionDeclaration' !== parent.type
-          && 'Identifier' === node.type
-          && 'ArrowFunctionExpression' !== parent.type
-          && 'Property' !== parent.type
-//          && (undefined !== parent.init && 'Identifier' === parent.init.type)
-        ) {
+//        console.log(node)
+//        console.log('---- Parent ---- ')
+//        console.log(parent)
+
+        if (isIdentifier(node, parent)) {
           return b.callExpression(b.identifier('wrapper'), [
             b.literal(file),
             b.literal(rowAt(source, node.start)),
@@ -85,6 +81,8 @@ module.exports = function(source, map) {
             b.literal(node.name),
             b.identifier(node.name)
           ])
+        } else if (isDeclaration(node, parent)) {
+          throw `${node.name} is redeclared in ${file}`
         }
       }
       return node

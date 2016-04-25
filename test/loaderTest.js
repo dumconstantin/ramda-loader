@@ -10,41 +10,40 @@ var invalidFiles = files.filter(x => /^invalid/.test(x))
 
 var wrapperExp = /wrapper\('([\.\/\w\-]+)',\s(\d+),\s(\d+),\s'(\w+)',\s(\w+)\)/g
 
+validFiles = []
+
+const compile = (file, config, cb) => {
+  config.entry.sample = `${__dirname}/../sample/src/${file}`
+  config.output.filename = `${__dirname}/../sample/dist/${file}`
+  webpack(config).run(cb)
+}
+
 describe('loader tests', () => {
-  var compiler
+
+  beforeEach(() => {
+    wrapperExp.lastIndex = 0
+  })
 
   validFiles.forEach(file => {
-
     it(`should compile and replace properly "${file}"`, (done) => {
-
-      config.entry.sample = `${__dirname}/../sample/src/${file}`
-      compiler = webpack(config)
-
-      compiler.run(function (err, stat) {
-        let source = fs.readFileSync(`${__dirname}/../sample/dist/bundle.js`, 'utf-8')
+      compile(file, config, (err, stat) => {
+        let source = fs.readFileSync(`${__dirname}/../sample/dist/${file}`, 'utf-8')
         let result = wrapperExp.exec(source)
-
         expect(err).to.be.null
         expect(result).to.not.be.null
-
         done()
       })
-
     })
-
   })
 
-/*
-  it('should run invalid sample tests', (done) => {
-
-    config.entry.sample = __dirname + '/../sample/src/valid-1.js'
-    compiler = webpack(config)
-
-    compiler.run(function (err, stat) {
-      console.log(stat)
-      done()
+  invalidFiles.forEach(file => {
+    it(`shouldn't compile and replace "${file}"`, (done) => {
+      compile(file, config, (err, stat) => {
+        console.log(err)
+        // expect(err).to.be.null
+        // expect(result).to.not.be.null
+        done()
+      })
     })
-
   })
-  */
 })
