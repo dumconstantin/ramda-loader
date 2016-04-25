@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dumconstantin/ramda-debug-loader.git"
+    "url": "git+https://github.com/dumconstantin/ramda-loader.git"
   },
   "keywords": [
     "ramda",
@@ -48,12 +48,13 @@
     "trace",
     "tap",
     "webpack",
-    "loader"
+    "loader",
+    "programming"
   ],
   "author": "\"Constantin Dumitrescu <dum.constantin@gmail.com> (https://github.com/dumconstantin)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dumconstantin/ramda-debug-loader/issues"
+    "url": "https://github.com/dumconstantin/ramda-loader/issues"
   },
-  "homepage": "https://github.com/dumconstantin/ramda-debug-loader#readme"
+  "homepage": "https://github.com/dumconstantin/ramda-loader#readme"
 }
