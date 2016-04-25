@@ -5,7 +5,7 @@ var answer = pipe(
   ifElse(
     equals(42),
     always('The answer to your Ramda import problems'),
-    subtract(10)
+    subtract(__, 10)
   )
 )
 

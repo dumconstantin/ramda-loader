@@ -53,7 +53,9 @@ describe('loader tests', () => {
     delete conf.module.noParse
     compile('index.js', conf, (errors, stat) => {
       let fn = require(`${__dirname}/../sample/dist/index.js`)
-      console.log(fn(10))
+      expect(fn(32)).to.be.a('string')
+      expect(fn(10)).to.be.a('number')
+      done()
     })
   })
 
