@@ -47,7 +47,7 @@ module.exports = function(source, map) {
 
   // Add ramdaDebugWrapper
   if (self.debug === true) {
-    source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js') \n ${source}`
+    source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js').fn \n ${source}`
   }
 
   self.callback(null, source, map)

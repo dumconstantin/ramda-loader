@@ -1,7 +1,7 @@
 
-const fn = (FileName, Row, Char, fnName, fn) => {
+const wrapper = (FileName, Row, Char, fnName, fn) => {
   return function () {
-    var args = arguments
+    var args = Array.prototype.slice.call(arguments)
     try {
       var result = fn.apply(null, args)
 
@@ -26,4 +26,4 @@ const regex = /__ramdaDebugWrapper\('([\.\/\w\-]+)',\s(\d+),\s(\d+),\s'(\w+)',\s
 
 const id = '__ramdaDebugWrapper'
 
-export { regex, fn, id }
+export { regex, wrapper as fn, id }

@@ -8,11 +8,13 @@ var files = fs.readdirSync(`${__dirname}/../sample/src/`)
 var validFiles = files.filter(x => /^valid/.test(x))
 var invalidFiles = files.filter(x => /^invalid/.test(x))
 var wrapperExp = require('./../dist/wrapper.js').regex
+var clone = require('ramda').clone
 
 const compile = (file, config, cb) => {
-  config.entry.sample = `${__dirname}/../sample/src/${file}`
-  config.output.filename = `${__dirname}/../sample/dist/${file}`
-  webpack(config).run((err, stat) => {
+  let conf = clone(config)
+  conf.entry.sample = `${__dirname}/../sample/src/${file}`
+  conf.output.filename = `${__dirname}/../sample/dist/${file}`
+  webpack(conf).run((err, stat) => {
     cb(stat.compilation.errors, stat)
   })
 }
@@ -43,4 +45,16 @@ describe('loader tests', () => {
       })
     })
   })
+
+  it('should load properly the encountered Ramda functions', (done) => {
+    let conf = clone(config)
+    delete conf.entry.vendor
+    delete conf.plugins
+    delete conf.module.noParse
+    compile('index.js', conf, (errors, stat) => {
+      let fn = require(`${__dirname}/../sample/dist/index.js`)
+      console.log(fn(10))
+    })
+  })
+
 })
