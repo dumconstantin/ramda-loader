@@ -9,17 +9,8 @@ var wrapperId = require('./wrapper.js').id
 
 import isIdentifier from './isIdentifier'
 import isDeclaration from './isDeclaration'
-
-function rowAt(text, charNo) {
-  let sub = text.substr(0, charNo)
-  let rows = sub.split('\n')
-  return rows.length
-}
-
-function charAt(text, charNo) {
-  let sub = text.substr(0, charNo)
-  return charNo - sub.lastIndexOf('\n')
-}
+import rowAt from './rowAt'
+import charAt from './charAt'
 
 module.exports = function(source, map) {
   var self = this
@@ -27,7 +18,6 @@ module.exports = function(source, map) {
   this.cacheable();
 
   var ast
-  var err = false
 
   try {
     ast = acorn.parse(source, {

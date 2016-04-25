@@ -1,5 +1,5 @@
 
-const shouldReplace = (node, parent) => {
+const isIdentifier = (node, parent) => {
 
   if (
     (node.type === 'Identifier') && (
@@ -27,4 +27,4 @@ const shouldReplace = (node, parent) => {
 
 }
 
-export default shouldReplace
+export default isIdentifier
