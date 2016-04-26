@@ -17,7 +17,8 @@ const isIdentifier = (node, parent) => {
        parent.object.start === node.start &&
        -1 !== ['apply', 'call'].indexOf(parent.property.name)
      ) ||
-      (parent.type === 'CallExpression' && parent.callee.name === node.name)
+      (parent.type === 'CallExpression' && parent.callee.name === node.name) ||
+      (parent.type === 'ConditionalExpression')
     )
   ) {
     return true
