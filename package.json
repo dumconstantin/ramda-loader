@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "acorn": "^3.1.0",
-    "ast-query": "^1.2.0",
     "ast-types": "^0.8.16",
     "escodegen": "^1.8.0",
     "estraverse": "^4.2.0",
