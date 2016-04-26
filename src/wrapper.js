@@ -12,7 +12,7 @@ const wrapper = (FileName, Row, Char, fnName, fn) => {
       }
 
     } catch(e) {
-      let err = new Error(FileName + ':' + Row + ':' + Char + ':' + fnName + ' ' + e.message)
+      let err = new Error(FileName + ':' + Row + ':' + Char + ':' + fnName + '\n' + e.message)
       err.FileName = FileName
       err.Row = Row
       err.Char = Char
