@@ -1,4 +1,7 @@
-# Use functional programming natively in JavaScript with [RamdaJs](http://ramdajs.com/) and [Webpack](http://webpack.github.io/)
+# Native functional programming in JS with [RamdaJs](http://ramdajs.com/) and [Webpack](http://webpack.github.io/)
+
+[![Build Status](https://travis-ci.org/dumconstantin/ramda-loader.svg?branch=master)](https://travis-ci.org/dumconstantin/ramda-loader)
+[![npm version](https://badge.fury.io/js/ramda-loader.svg)](https://badge.fury.io/js/ramda-loader)
 
 Start writing beautiful functional programming code in JavaScript without the ``` R. ``` namespace or worring about importing functions by hand.
 
