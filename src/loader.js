@@ -40,14 +40,19 @@ module.exports = function(source, map) {
     traverse(ast, visitor)
   }
 
-  // Add global Ramda fns
-  let header = 'var R = require("ramda")\n'
-  header += R.join('\n', R.map(x => `var ${x} = R.${x}`, self.ramdaImportFns))
-  source = header + '\n\n' + source
+  // Add header and imports only if the file contained RamdaJs functions
+  if (self.ramdaImportFns.length > 0) {
 
-  // Add ramdaDebugWrapper
-  if (self.debug === true) {
-    source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js').fn \n ${source}`
+    // Add global Ramda fns
+    let header = 'var R = require("ramda")\n'
+    header += R.join('\n', R.map(x => `var ${x} = R.${x}`, self.ramdaImportFns))
+    source = header + '\n\n' + source
+
+    // Add ramdaDebugWrapper
+    if (self.debug === true) {
+      source = `var ${wrapperId} = require('${__dirname}/../dist/wrapper.js').fn \n ${source}`
+    }
+
   }
 
   self.callback(null, source, map)
