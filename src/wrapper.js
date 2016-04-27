@@ -13,7 +13,7 @@ const wrapper = (FileName, Row, Char, fnName, fn) => {
 
     } catch(e) {
       let message = `${FileName}:${Row}:${Char}:${fnName}\n`
-      message += `Args: ${args}\n`
+      console.error(`${fnName} arguments: `, args)
       e.message = message + e.message
       e.FileName = FileName
       e.Row = Row
