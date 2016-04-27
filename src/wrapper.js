@@ -12,12 +12,14 @@ const wrapper = (FileName, Row, Char, fnName, fn) => {
       }
 
     } catch(e) {
-      let err = new Error(FileName + ':' + Row + ':' + Char + ':' + fnName + '\n' + e.message)
-      err.FileName = FileName
-      err.Row = Row
-      err.Char = Char
-      err.args = args
-      throw err
+      let message = `${FileName}:${Row}:${Char}:${fnName}\n`
+      message += `Args: ${args}\n`
+      e.message = message + e.message
+      e.FileName = FileName
+      e.Row = Row
+      e.Char = Char
+      e.args = args
+      throw e
     }
   }
 }
