@@ -121,7 +121,7 @@ Running The Test Suite
 ----------
 Install the dependencies (see Build)
 
-Then you can run the tests by running (also builds the loader):
+Then you can run the tests by running (which also builds the loader):
 
 ```bash
 $ npm test
