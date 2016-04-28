@@ -14,7 +14,8 @@ module.exports = {
     errorDetails: true
   },
   output: {
-    filename: __dirname + '/dist/index.js',
+    path: `${__dirname}/dist`,
+    filename: '[name].js',
     libraryTarget: 'commonjs2'
   },
   target: 'node',
