@@ -103,6 +103,30 @@ module.exports = answer;
 
 ```
 
+Build
+----------
+Install the dependencies, via:
+
+```bash
+$ npm install
+```
+then you can run:
+
+```bash
+$ npm run build
+```
+which will build the loader in the ``` /dist ``` folder.
+
+Running The Test Suite
+----------
+Install the dependencies (see Build)
+
+Then you can run the tests by running (also builds the loader):
+
+```bash
+$ npm test
+```
+
 ## Contributing:
 
 Feel free to open issues to propose stuff and participate. Pull requests are also welcome.
