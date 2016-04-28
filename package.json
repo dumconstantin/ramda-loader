@@ -29,8 +29,7 @@
     "build": "npm run build:loader && npm run build:sample",
     "build:loader": "rm -rf dist/* && ./node_modules/.bin/gulp build",
     "build:sample": "rm -rf sample/dist/* && ./node_modules/.bin/webpack --colors --config ./sample/webpack.config.js",
-    "test:all": "npm run build && ./node_modules/.bin/mocha --reporter spec",
-    "test": "npm run build:loader && rm -rf sample/dist/* && ./node_modules/.bin/mocha --reporter spec"
+    "test": "npm run build:loader && rm -rf sample/dist/* && ./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",

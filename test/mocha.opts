@@ -1,0 +1,4 @@
+--no-timeouts
+--colors
+--reporter spec
+--full-trace
