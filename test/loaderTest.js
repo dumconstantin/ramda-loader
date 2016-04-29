@@ -20,6 +20,16 @@ const compile = (file, config, cb) => {
   })
 }
 
+const compileFn = (file, cb) => {
+  let conf = clone(config)
+  delete conf.entry.vendor
+  delete conf.plugins
+  delete conf.module.noParse
+  compile(file, conf, () => {
+    cb(require(`${__dirname}/../sample/dist/${file}`))
+  })
+}
+
 describe('loader tests', () => {
 
   beforeEach(() => {
@@ -48,15 +58,30 @@ describe('loader tests', () => {
   })
 
   it('should load properly the encountered Ramda functions', (done) => {
-    let conf = clone(config)
-    delete conf.entry.vendor
-    delete conf.plugins
-    delete conf.module.noParse
-    compile('index.js', conf, (errors, stat) => {
-      let fn = require(`${__dirname}/../sample/dist/index.js`)
+    compileFn('index.js', fn => {
       expect(fn(32)).to.be.a('string')
       expect(fn(10)).to.be.a('number')
       done()
+    })
+  })
+
+  it('should trow an error on a redeclaration', (done) => {
+    compileFn('redeclarationError.js',  fn => {
+      let err
+      try {
+        fn(null)
+      } catch (e) {
+        err = e
+      }
+
+      expect(err).to.an('error')
+      expect(err.args).to.not.be.empty
+      expect(err.FileName).to.not.be.empty
+      expect(err.Row).to.not.be.empty
+      expect(err.Char).to.not.be.empty
+
+      done()
+
     })
   })
 
