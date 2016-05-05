@@ -15,7 +15,9 @@ const isDeclaration = (node, parent) => {
         -1 === ['apply', 'call'].indexOf(parent.property.name)) ||
       (parent.type === 'ImportSpecifier' && parent.local.name === node.name) ||
       (parent.type === 'ImportDefaultSpecifier' && parent.local.name === node.name) ||
-      (parent.type === 'ImportNamespaceSpecifier' && parent.local.name === node.name)
+      (parent.type === 'ImportNamespaceSpecifier' && parent.local.name === node.name) |
+      (parent.type === 'ExportSpecifier' && parent.exported.name === node.name) ||
+      (parent.type === 'ExportSpecifier' && parent.local.name === node.name)
     )
   ) {
     return true
