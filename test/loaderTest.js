@@ -51,7 +51,8 @@ describe('loader tests', () => {
   invalidFiles.forEach(file => {
     it(`shouldn't compile and replace "${file}"`, (done) => {
       compile(file, config, (errors, stat) => {
-        expect(errors).to.have.length.above(0)
+        expect(errors.length).to.above(0)
+        expect(errors[0].message.toString()).to.contain('redeclared')
         done()
       })
     })
