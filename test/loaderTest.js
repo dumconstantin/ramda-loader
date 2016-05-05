@@ -7,7 +7,7 @@ var config = require(`${__dirname}/../sample/webpack.config.js`)
 var files = fs.readdirSync(`${__dirname}/../sample/src/`)
 var validFiles = files.filter(x => /^valid/.test(x))
 var invalidFiles = files.filter(x => /^invalid/.test(x))
-var wrapperExp = require('./../dist/wrapper.js').regex
+var wrapper = require('./../dist/wrapper.js')
 var clone = require('ramda').clone
 
 const compile = (file, config, cb) => {
@@ -33,14 +33,14 @@ const compileFn = (file, cb) => {
 describe('loader tests', () => {
 
   beforeEach(() => {
-    wrapperExp.lastIndex = 0
+    wrapper.regex.lastIndex = 0
   })
 
   validFiles.forEach(file => {
     it(`should compile and replace properly "${file}"`, (done) => {
       compile(file, config, (errors, stat) => {
         let source = fs.readFileSync(`${__dirname}/../sample/dist/${file}`, 'utf-8')
-        let result = wrapperExp.exec(source)
+        let result = wrapper.regex.exec(source)
         expect(errors.length).to.equal(0)
         expect(result).to.not.be.null
         done()
@@ -65,8 +65,8 @@ describe('loader tests', () => {
     })
   })
 
-  it('should trow an error on a redeclaration', (done) => {
-    compileFn('redeclarationError.js',  fn => {
+  it('should throw an error', (done) => {
+    compileFn('throwError.js',  fn => {
       let err
       try {
         fn(null)
@@ -82,6 +82,35 @@ describe('loader tests', () => {
 
       done()
 
+    })
+  })
+
+  it('should identify final function values as opposed to Ramda curry wrappers', done => {
+    compileFn('curryWrappers.js', fns => {
+      function foo() {}
+      let a = { a: foo }
+
+      function args(count, first) {
+        let result = [first]
+        while (count -= 1) {
+          result.push('dummy')
+        }
+        return result
+      }
+
+      expect(fns.f('a').name).to.equal(wrapper.closureId)
+      expect(fns.f('a', a).name).to.equal('foo')
+      expect(fns.n2(foo, 1).name).to.equal('foo')
+
+      // Test all possible variations of currying
+      for (let i = 3; i <= 10; i += 1) {
+        for (let j = i - 1; j >= 2; j -= 1) {
+          expect(fns[`n${i}`].apply(null, args(j, foo)).name).to.equal(wrapper.closureId)
+        }
+        expect(fns[`n${i}`].apply(null, args(i, foo)).name).to.equal('foo')
+      }
+
+      done()
     })
   })
 
