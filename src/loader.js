@@ -29,8 +29,8 @@ module.exports = function(source, map) {
       sourceType: 'module'
     })
   } catch (e) {
-    self.emitError(new Error('[ramda-debug-loader] Cannot parse the source file', e))
-    return source
+    self.callback(null, source, map)
+    return
   }
 
   if (self.debug === true) {
