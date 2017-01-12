@@ -1,6 +1,6 @@
 {
   "name": "ramda-loader",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "dependencies": {
     "acorn": {
       "version": "3.3.0",

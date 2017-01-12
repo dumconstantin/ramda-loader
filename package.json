@@ -1,6 +1,6 @@
 {
   "name": "ramda-loader",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Indispensable RamdaJs Webpack loader for writing and debugging functional code",
   "main": "dist/loader.js",
   "directories": {
