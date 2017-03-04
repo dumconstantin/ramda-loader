@@ -26,7 +26,7 @@ const getVisitor = ctx => (node, parent) => {
           b.identifier(node.name)
         ])
       }
-    } else if (isDeclaration(node, parent)) {
+    } else if (isDeclaration(node, parent) && ctx.strict) {
       ctx.emitError(redeclareError(ctx, rowLoc, charLoc, node.name))
     }
   }
