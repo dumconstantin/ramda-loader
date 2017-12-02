@@ -23,7 +23,7 @@ module.exports = {
     modulesDirectories: [__dirname + '/../../', 'node_modules']
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
   ],
   module: {
     noParse: [
