@@ -1,5 +1,5 @@
 var webpack = require('webpack')
-
+var path = require('path')
 module.exports = {
   entry: {
     sample: `${__dirname}/src/index.js`,
@@ -23,6 +23,11 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }),
   ],
+  resolveLoader: {
+    alias: {
+      'ramda-loader': path.join(__dirname, '../')
+    }
+  },
   module: {
     noParse: [/ramda/],
     rules: [{
