@@ -18,14 +18,17 @@ module.exports = {
   },
   target: 'node',
   resolve: {
-    modules: [__dirname + '/../../', 'node_modules']
+    modules: [`${__dirname}/../../`, 'node_modules']
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }),
+    new webpack.optimize.CommonsChunkPlugin({ 
+      name: 'vendor', 
+      filename: 'vendor.bundle.js' 
+    }),
   ],
   resolveLoader: {
     alias: {
-      'ramda-loader': path.join(__dirname, '../')
+      'ramda-loader': `${__dirname}/../`
     }
   },
   module: {
