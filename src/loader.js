@@ -8,7 +8,7 @@ import shortenFileName from './shortenFileName'
 import { id as wrapperId } from './wrapper'
 
 module.exports = function(source, map) {
-  let self = this;//Object.assign({}, this)
+  let self = R.clone(this);
   let ast
 
   let query = loaderUtils.parseQuery(self.query)

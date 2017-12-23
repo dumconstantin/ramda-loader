@@ -11,11 +11,10 @@ var wrapper = require('./../dist/wrapper.js')
 var clone = require('ramda').clone
 
 const compile = (file, config, cb) => {
-  let conf = clone(config)
-  conf.entry.sample = `${__dirname}/../sample/src/${file}`
-  conf.output.filename = `${file}`
-  conf.output.path = `${__dirname}/../sample/dist`
-  webpack(conf).run((err, stat) => {
+  config.entry.sample = `${__dirname}/../sample/src/${file}`
+  config.output.filename = `${file}`
+  config.output.path = `${__dirname}/../sample/dist`
+  webpack(config).run((err, stat) => {
     cb(stat.compilation.errors, stat)
   })
 }
