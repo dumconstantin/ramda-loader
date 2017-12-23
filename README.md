@@ -1,4 +1,4 @@
-Native functional programming in JavaScript with [Ramda](http://ramdajs.com/) and [Webpack](http://webpack.github.io/) V1
+Native functional programming in JavaScript with [Ramda](http://ramdajs.com/) and [Webpack](http://webpack.github.io/)
 =============
 
 [![Build Status](https://travis-ci.org/dumconstantin/ramda-loader.svg?branch=master)](https://travis-ci.org/dumconstantin/ramda-loader)

@@ -1,5 +1,4 @@
-import R from 'ramda'
-
+var R = require('ramda');
 let fn = () => {}
 
 const ramdaWrappers = {

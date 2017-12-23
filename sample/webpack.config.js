@@ -1,8 +1,8 @@
 var webpack = require('webpack')
-
+var path = require('path')
 module.exports = {
   entry: {
-    sample: __dirname + '/src/index.js',
+    sample: `${__dirname}/src/index.js`,
     vendor: [
       'ramda'
     ]
@@ -19,21 +19,35 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   target: 'node',
-  resolveLoader: {
-    modulesDirectories: [__dirname + '/../../', 'node_modules']
+  resolve: {
+    modules: [`${__dirname}/../../`, 'node_modules']
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+    new webpack.optimize.CommonsChunkPlugin({ 
+      name: 'vendor', 
+      filename: 'vendor.bundle.js' 
+    }),
   ],
+  resolveLoader: {
+    alias: {
+      'ramda-loader': `${__dirname}/../`
+    }
+  },
   module: {
-    noParse: [
-      'ramda'
-    ],
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel' ,
-        query: { presets: ['es2015'] }
-      },
-      { test: /.*/, exclude: /node_modules|wrapper/, loader: 'ramda-loader?debug=true' }
-    ]
+    noParse: [/ramda/],
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['babel-preset-es2015']
+        }
+      }
+    }, {
+      test: /.*/,
+      exclude: /node_modules|wrapper/,
+      use: 'ramda-loader?debug=true'
+    }]
   }
 }
