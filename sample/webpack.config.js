@@ -3,7 +3,9 @@ var path = require('path')
 module.exports = {
   entry: {
     sample: `${__dirname}/src/index.js`,
-    vendor: ['ramda']
+    vendor: [
+      'ramda'
+    ]
   },
   stats: {
     colors: true,
