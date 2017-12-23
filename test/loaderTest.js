@@ -77,8 +77,8 @@ describe('loader tests', () => {
       expect(err).to.an('error')
       expect(err.args).to.not.be.empty
       expect(err.FileName).to.not.be.empty
-      expect(err.Row).to.not.be.empty
-      expect(err.Char).to.not.be.empty
+      expect(err.Row.toString()).to.not.be.empty
+      expect(err.Char.toString()).to.not.be.empty
 
       done()
 
